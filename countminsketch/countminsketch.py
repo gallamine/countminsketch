@@ -64,7 +64,7 @@ class CountMinSketch:
             err, prob = self.error()
             return min(counts), min(counts) + err, prob
 
-    def _summation(self, x, increment=True):
+    def _summation(self, x, weight=1, increment=True):
         """
         Add or subtract elements from the data structure.
         :param increment: add to the count (True), or subtract from the count (False)
@@ -74,31 +74,31 @@ class CountMinSketch:
         bin_indexes = self._hash(x)
         for i, k in zip(range(self.d), bin_indexes):
             if increment:
-                self.table[i][k] += 1
+                self.table[i][k] += weight
             else:
-                if self.table[i][k] <= 1:
+                if self.table[i][k] <= weight:
                     self.table[i][k] = 0
                 else:
-                    self.table[i][k] -= 1
+                    self.table[i][k] -= weight
 
-    def add(self, x):
+    def add(self, x, weight=1):
         """
 
         :return:
         """
-        self.N += 1
-        self._summation(x, increment=True)
+        self.N += weight
+        self._summation(x, weight=weight, increment=True)
 
         return None
 
-    def subtract(self, x):
+    def subtract(self, x, weight=1):
         """
 
         :return:
         """
 
-        self.N -= 1
-        self._summation(x, increment=False)
+        self.N -= weight
+        self._summation(x, weight=weight, increment=False)
 
     def error(self):
         """
@@ -107,3 +107,9 @@ class CountMinSketch:
         """
 
         return self.eta*self.N, (1 - self.delta)
+
+    def __len__(self):
+        """
+        Return the number of elements that have been added to the sketch
+        """
+        return self.N
