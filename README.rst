@@ -23,6 +23,7 @@ Example
 
 
 .. code:: python
+
     from countminsketch.countminsketch import CountMinSketch
     import numpy as np
     import matplotlib.pyplot as plt
@@ -51,6 +52,7 @@ Example
 
 
 .. code:: python
+
     est_counts = []
     for val in actual_counts.keys():
         est_counts.append(cms.query(val))
