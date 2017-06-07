@@ -13,6 +13,13 @@ class TestCountMinSketch(unittest.TestCase):
         cms.add('test_val')
         assert cms.query('test_val') == 2
 
+    def test_weighted_add(self):
+        cms = CountMinSketch(10, 16)
+
+        cms.add('test_val2', weight=100)
+        cms.add('test_val2', weight=50)
+        assert cms.query('test_val2') == 150
+
     def test_subtract(self):
         cms = CountMinSketch(10, 12)
         assert cms.query('test_val2') == 0
@@ -46,6 +53,12 @@ class TestCountMinSketch(unittest.TestCase):
 
         assert err3 <= err1
         assert err2 <= err1
+
+    def test_len(self):
+        cms = CountMinSketch(10, 10)
+        assert(len(cms) == 0)
+        cms.add('test_val')
+        assert(len(cms) == 1)
 
     def test_big_scale(self):
         import random

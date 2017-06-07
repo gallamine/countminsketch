@@ -1,3 +1,6 @@
 name: countminsketch
 dependencies:
 - python=3
+- numpy
+- jupyter
+- seaborn
